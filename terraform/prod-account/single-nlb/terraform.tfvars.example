@@ -1,0 +1,26 @@
+# Example terraform.tfvars for Single NLB Approach
+# Copy this file to terraform.tfvars and update with your values
+
+aws_region = "us-east-1"
+
+# Prod Account VPC Configuration
+prod_vpc_id = "vpc-xxxxxxxxx"  # Prod VPC ID (10.2.0.0/16)
+prod_subnet_ids = [
+  "subnet-xxxxx",  # Subnet 1 (should be able to reach on-premises via TGW)
+  "subnet-yyyyy"   # Subnet 2 (different AZ for HA)
+]
+
+# On-Premises Redis Configuration
+redis_server_ips = [
+  "10.0.4.10",  # Redis server 1 IP
+  "10.0.4.11",  # Redis server 2 IP
+  "10.0.4.12"   # Redis server 3 IP
+]
+redis_port = 6379
+
+# Consumer Account Configuration
+consumer_account_id = "123456789012"  # Joda-Toda-AWS account ID
+
+# Endpoint Service Configuration
+endpoint_service_name = "joda-redis-onprem-service"
+

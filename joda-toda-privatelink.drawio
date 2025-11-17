@@ -1,0 +1,277 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Joda-Toda Architecture with PrivateLink" id="joda-toda-privatelink">
+    <mxGraphModel dx="1800" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- On-Premises Section -->
+        <mxCell id="onprem-container" value="JODA COMPANY - ON-PREMISES" style="swimlane;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="1520" height="200" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="onprem-system1" value="System 1&#xa;10.0.1.x" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="onprem-container">
+          <mxGeometry x="80" y="60" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="onprem-system2" value="System 2&#xa;10.0.2.x" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="onprem-container">
+          <mxGeometry x="240" y="60" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="onprem-system3" value="System 3&#xa;10.0.3.x" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="onprem-container">
+          <mxGeometry x="400" y="60" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="onprem-redis" value="Redis&#xa;(3 nodes)&#xa;10.0.4.x" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcccc;strokeColor=#cc0000;fontStyle=1;" vertex="1" parent="onprem-container">
+          <mxGeometry x="560" y="60" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="onprem-network" value="On-Premises Network&#xa;10.0.0.0/16" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontStyle=2" vertex="1" parent="onprem-container">
+          <mxGeometry x="80" y="140" width="600" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="direct-connect-box" value="Direct Connect&#xa;(DX Link)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;" vertex="1" parent="onprem-container">
+          <mxGeometry x="800" y="80" width="140" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Connectivity Account Section -->
+        <mxCell id="connectivity-container" value="AWS CONNECTIVITY ACCOUNT (Network Hub)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="40" y="280" width="1520" height="280" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="connectivity-vpc" value="VPC-Connectivity&#xa;10.1.0.0/16" style="swimlane;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="connectivity-container">
+          <mxGeometry x="80" y="60" width="1360" height="200" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="dxgw" value="Direct Connect Gateway&#xa;(DXGW)&#xa;&#xa;• Receives on-prem traffic&#xa;• Routes to/from on-premises" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" vertex="1" parent="connectivity-vpc">
+          <mxGeometry x="80" y="40" width="200" height="100" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="tgw" value="Transit Gateway (TGW)&#xa;&#xa;• Central network routing hub&#xa;• Cross-account connectivity&#xa;• Shared via RAM" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" vertex="1" parent="connectivity-vpc">
+          <mxGeometry x="360" y="40" width="240" height="100" as="geometry" />
+        </mxCell>
+        
+        <!-- Connectivity Account Note -->
+        <mxCell id="connectivity-note" value="⚠️ NO CHANGES&#xa;Connectivity Account&#xa;remains untouched" style="text;html=1;strokeColor=#82b366;fillColor=#d5e8d4;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=12;fontStyle=1;" vertex="1" parent="connectivity-vpc">
+          <mxGeometry x="680" y="40" width="200" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Prod Account Section -->
+        <mxCell id="prod-container" value="AWS PROD ACCOUNT (Services) - PrivateLink Provider" style="swimlane;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="40" y="600" width="720" height="360" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="prod-vpc" value="VPC-Prod&#xa;10.2.0.0/16" style="swimlane;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="prod-container">
+          <mxGeometry x="80" y="60" width="560" height="280" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="tgw-attachment" value="Transit Gateway&#xa;Attachment&#xa;&#xa;Connected to&#xa;Connectivity Account TGW" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;" vertex="1" parent="prod-vpc">
+          <mxGeometry x="80" y="40" width="140" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- PrivateLink Components in Prod Account -->
+        <mxCell id="nlb" value="Network Load Balancer&#xa;(NLB)&#xa;&#xa;• 3 Target Groups&#xa;• Targets Redis IPs&#xa;• Via TGW → DX" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;" vertex="1" parent="prod-vpc">
+          <mxGeometry x="240" y="40" width="180" height="100" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="endpoint-service" value="VPC Endpoint Service&#xa;&#xa;• Created from NLB&#xa;• Shared with&#xa;Joda-Toda-AWS Account" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;" vertex="1" parent="prod-vpc">
+          <mxGeometry x="440" y="40" width="100" height="100" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="prod-app-services" value="Application Services" style="swimlane;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="prod-vpc">
+          <mxGeometry x="80" y="160" width="460" height="100" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="prod-app1" value="App 1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="prod-app-services">
+          <mxGeometry x="20" y="30" width="80" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="prod-app2" value="App 2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="prod-app-services">
+          <mxGeometry x="120" y="30" width="80" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Joda-Toda Account Section -->
+        <mxCell id="joda-toda-container" value="AWS JODA-TODA-AWS ACCOUNT" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="800" y="600" width="760" height="560" as="geometry" />
+        </mxCell>
+        
+        <!-- Dev VPC -->
+        <mxCell id="dev-vpc" value="VPC-Dev&#xa;10.3.0.0/16&#xa;&#xa;✅ Routable with Joda Network&#xa;✅ Has PrivateLink Access" style="swimlane;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" vertex="1" parent="joda-toda-container">
+          <mxGeometry x="40" y="60" width="680" height="220" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="dev-tgw-attachment" value="TGW Attachment&#xa;(to Joda TGW)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="dev-vpc">
+          <mxGeometry x="40" y="50" width="140" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="dev-endpoints" value="VPC Endpoints&#xa;(3 endpoints)&#xa;&#xa;• Connect to Redis&#xa;• Via PrivateLink" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcccc;strokeColor=#cc0000;fontStyle=1;" vertex="1" parent="dev-vpc">
+          <mxGeometry x="220" y="50" width="180" height="100" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="dev-apps" value="Dev Applications" style="swimlane;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="dev-vpc">
+          <mxGeometry x="440" y="50" width="200" height="140" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="dev-app1" value="App" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="dev-apps">
+          <mxGeometry x="20" y="30" width="70" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="dev-app2" value="App" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="dev-apps">
+          <mxGeometry x="110" y="30" width="70" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Stage VPC -->
+        <mxCell id="stage-vpc" value="VPC-Stage&#xa;10.4.0.0/16&#xa;&#xa;⚠️ Routable with Toda Network&#xa;❌ No PrivateLink (not needed)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="joda-toda-container">
+          <mxGeometry x="40" y="300" width="320" height="120" as="geometry" />
+        </mxCell>
+        
+        <!-- Prod VPC -->
+        <mxCell id="prod-toda-vpc" value="VPC-Prod&#xa;10.5.0.0/16&#xa;&#xa;⚠️ Routable with Toda Network&#xa;❌ No PrivateLink (not needed)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="joda-toda-container">
+          <mxGeometry x="400" y="300" width="320" height="120" as="geometry" />
+        </mxCell>
+        
+        <!-- Toda Account Reference -->
+        <mxCell id="toda-account-ref" value="TODA COMPANY&#xa;AWS ACCOUNT&#xa;&#xa;(Separate Account)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=2;dashed=1;" vertex="1" parent="joda-toda-container">
+          <mxGeometry x="40" y="450" width="680" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Connections -->
+        <!-- On-prem to Direct Connect -->
+        <mxCell id="conn1" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#d79b00;" edge="1" parent="1" source="onprem-container" target="direct-connect-box">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="700" y="400" as="sourcePoint" />
+            <mxPoint x="750" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Direct Connect to DXGW -->
+        <mxCell id="conn2" value="Direct Connect" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#d79b00;fontSize=11;fontStyle=1" edge="1" parent="1" source="direct-connect-box" target="dxgw">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="700" y="400" as="sourcePoint" />
+            <mxPoint x="750" y="350" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="870" y="280" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- DXGW to TGW -->
+        <mxCell id="conn3" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#82b366;" edge="1" parent="1" source="dxgw" target="tgw">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="700" y="400" as="sourcePoint" />
+            <mxPoint x="750" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Redis to NLB (via TGW) -->
+        <mxCell id="conn-redis-nlb" value="Redis Traffic&#xa;via TGW" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#cc0000;fontSize=10;fontStyle=1;dashed=1" edge="1" parent="1" source="onprem-redis" target="nlb">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="700" y="400" as="sourcePoint" />
+            <mxPoint x="750" y="350" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="620" y="400" />
+              <mxPoint x="480" y="400" />
+              <mxPoint x="480" y="600" />
+              <mxPoint x="330" y="600" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- NLB to Endpoint Service -->
+        <mxCell id="conn-nlb-service" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#d79b00;" edge="1" parent="1" source="nlb" target="endpoint-service">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="700" y="400" as="sourcePoint" />
+            <mxPoint x="750" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Endpoint Service to Dev VPC Endpoints (PrivateLink) -->
+        <mxCell id="conn-privatelink" value="🔒 PrivateLink&#xa;(Shared Service)" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=4;strokeColor=#cc0000;fontSize=11;fontStyle=1;dashed=1" edge="1" parent="1" source="endpoint-service" target="dev-endpoints">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="700" y="400" as="sourcePoint" />
+            <mxPoint x="750" y="350" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="800" y="650" />
+              <mxPoint x="800" y="680" />
+              <mxPoint x="1040" y="680" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- TGW to Prod Account -->
+        <mxCell id="conn4" value="Transit Gateway&#xa;(Shared via RAM)" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#82b366;fontSize=11;fontStyle=1" edge="1" parent="1" source="tgw" target="tgw-attachment">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="700" y="400" as="sourcePoint" />
+            <mxPoint x="750" y="350" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="480" y="600" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- TGW Attachment to NLB -->
+        <mxCell id="conn-tgw-nlb" value="Route to Redis&#xa;via TGW" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#d79b00;fontSize=10;fontStyle=2" edge="1" parent="1" source="tgw-attachment" target="nlb">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="700" y="400" as="sourcePoint" />
+            <mxPoint x="750" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- TGW to Dev VPC -->
+        <mxCell id="conn-tgw-dev" value="TGW&#xa;(Joda Network)" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#666666;fontSize=10;fontStyle=2;dashed=1" edge="1" parent="1" source="tgw" target="dev-tgw-attachment">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="700" y="400" as="sourcePoint" />
+            <mxPoint x="750" y="350" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1520" y="400" />
+              <mxPoint x="1520" y="680" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Dev Endpoints to Dev Apps -->
+        <mxCell id="conn-dev-endpoints-apps" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#cc0000;" edge="1" parent="1" source="dev-endpoints" target="dev-apps">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="700" y="400" as="sourcePoint" />
+            <mxPoint x="750" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Legend -->
+        <mxCell id="legend" value="Legend" style="swimlane;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1000" width="1520" height="160" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="legend-redis" value="Redis Component" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcccc;strokeColor=#cc0000;" vertex="1" parent="legend">
+          <mxGeometry x="40" y="40" width="120" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="legend-privatelink" value="PrivateLink Connection" style="endArrow=classic;html=1;rounded=0;strokeWidth=3;strokeColor=#cc0000;dashed=1" edge="1" parent="legend">
+          <mxGeometry x="200" y="60" width="100" height="0" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="legend-tgw" value="Transit Gateway Connection" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;strokeColor=#666666;dashed=1" edge="1" parent="legend">
+          <mxGeometry x="340" y="60" width="100" height="0" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="legend-direct" value="Direct Connect" style="endArrow=classic;html=1;rounded=0;strokeWidth=3;strokeColor=#d79b00;" edge="1" parent="legend">
+          <mxGeometry x="480" y="60" width="100" height="0" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="legend-note1" value="✅ = Has access" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="legend">
+          <mxGeometry x="620" y="50" width="120" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="legend-note2" value="⚠️ = Routable but no PrivateLink" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="legend">
+          <mxGeometry x="620" y="70" width="200" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="legend-note3" value="❌ = No access" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="legend">
+          <mxGeometry x="620" y="90" width="120" height="20" as="geometry" />
+        </mxCell>
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
+

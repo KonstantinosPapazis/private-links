@@ -1,0 +1,31 @@
+# Example terraform.tfvars for Joda-Toda-AWS Account
+# Copy this file to terraform.tfvars and update with your values
+
+aws_region = "us-east-1"
+
+# Dev VPC Configuration
+dev_vpc_id = "vpc-zzzzzzzzz"  # Dev VPC ID (10.3.0.0/16)
+dev_subnet_ids = [
+  "subnet-aaaaa",  # Subnet 1 (different AZ)
+  "subnet-bbbbb"   # Subnet 2 (different AZ for HA)
+]
+
+# Redis Configuration
+redis_port = 6379
+number_of_endpoints = 3
+environment = "dev"
+
+# Choose ONE of the following approaches:
+
+# Option 1: Single NLB Approach (RECOMMENDED)
+vpc_endpoint_service_name = "com.amazonaws.vpce.us-east-1.vpce-svc-0123456789abcdef"
+# Get this from: terraform/prod-account/single-nlb/ output
+
+# Option 2: Three NLBs Approach
+# vpc_endpoint_service_names = [
+#   "com.amazonaws.vpce.us-east-1.vpce-svc-0123456789abcdef",  # Service 1
+#   "com.amazonaws.vpce.us-east-1.vpce-svc-abcdef0123456789",  # Service 2
+#   "com.amazonaws.vpce.us-east-1.vpce-svc-56789abcdef01234"   # Service 3
+# ]
+# Get these from: terraform/prod-account/three-nlbs/ output
+
